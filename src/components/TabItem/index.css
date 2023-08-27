@@ -1,0 +1,24 @@
+.tab-button {
+  border-width: 0px;
+  background-color: transparent;
+  font-size: 15px;
+  font-family: sans-serif;
+  font-weight: 550;
+  cursor: pointer;
+}
+li {
+  list-style: none;
+}
+.active-button {
+  border-width: 0px;
+  background-color: transparent;
+  font-size: 15px;
+  font-family: sans-serif;
+  font-weight: 550;
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
+  border-bottom-color: red;
+  padding-bottom: 4px;
+  color: rgb(240, 99, 99);
+  cursor: pointer;
+}
