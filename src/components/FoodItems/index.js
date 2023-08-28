@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react'
 import Loader from 'react-loader-spinner'
 import Navbar from '../Navabar'
 import FoodItem from '../FoodItem'
-
 import TabItem from '../TabItem'
 import './index.css'
 
@@ -24,6 +23,7 @@ const apiStatusConstants = {
 
 const FoodItems = () => {
   const [foodItemList, setFoodItemList] = useState([])
+  const [filteredObject, setFilteredObject] = useState({})
   const [activeTabId, setActiveTabId] = useState(tabsList[0].tabId)
   const [apiStatus, setApiStatus] = useState(apiStatusConstants.initial)
 
@@ -40,6 +40,13 @@ const FoodItems = () => {
     dishPrice: each.dish_price,
     nextUrl: each.nexturl,
   })
+
+  const filterObjectFunction = () => {
+    const filteredObjectNew = foodItemList.filter(
+      each => each.menuCategoryId === activeTabId,
+    )
+    setFilteredObject(filteredObjectNew)
+  }
 
   const fetchRestaurantData = async () => {
     setApiStatus(apiStatusConstants.inProgress)
@@ -59,13 +66,14 @@ const FoodItems = () => {
         menuCategoryImage: each.menu_category_image,
       }))
 
-      const filteredObject = tableMenuList.filter(
+      const filteredObjectNew = tableMenuList.filter(
         each => each.menuCategoryId === activeTabId,
       )
+      setFilteredObject(filteredObjectNew)
 
       setApiStatus(apiStatusConstants.success)
 
-      setFoodItemList(filteredObject)
+      setFoodItemList(tableMenuList)
     }
   }
 
@@ -76,8 +84,7 @@ const FoodItems = () => {
   )
 
   const updateActiveTabId = tabId => {
-    console.log(foodItemList)
-    setActiveTabId(tabId, setFoodItemList([]), fetchRestaurantData())
+    setActiveTabId(tabId, filterObjectFunction())
   }
 
   useEffect(() => {
@@ -86,8 +93,8 @@ const FoodItems = () => {
 
   const renderFoodItem = () => (
     <ul className="food-items-container">
-      {foodItemList.length > 0 &&
-        foodItemList[0].categoryDishes.map(each => (
+      {filteredObject.length > 0 &&
+        filteredObject[0].categoryDishes.map(each => (
           <FoodItem foodItemDetails={each} key={each.dishId} />
         ))}
     </ul>
